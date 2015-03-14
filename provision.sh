@@ -18,6 +18,11 @@ debconf-set-selections <<< 'mysql-server mysql-server/root_password password roo
 debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
 apt-get install -y php5-mysql mysql-server
 
+# Open MySQL ports to outside (Comment out the following to disable)
+sed -i -e 's/bind-address/#bind-address/g' /etc/mysql/my.cnf
+mysql -u root -proot -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root';"
+service mysql restart
+
 # Install Apache2
 apt-get install -y apache2 libapache2-mod-php5
 
